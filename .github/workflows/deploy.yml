@@ -1,0 +1,41 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches:
+      - main  # Trigger this robot whenever you push to the 'main' branch
+
+jobs:
+  terraform:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+
+    # Run these commands inside the 'terraform' folder
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    steps:
+      # 1. Download your code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Install Terraform on the robot
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # 3. Log in to AWS (using the secrets you just saved)
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # 4. Initialize (Connect to the S3 Shared Brain)
+      - name: Terraform Init
+        run: terraform init
+
+      # 5. Apply (Build the infrastructure)
+      - name: Terraform Apply
+        run: terraform apply -auto-approve

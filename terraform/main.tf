@@ -5,6 +5,13 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  # --- NEW: Remote Backend ---
+  backend "s3" {
+    bucket = "finance-tfstate-aryan-2026"
+    key    = "finance-project/terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 provider "aws" {
