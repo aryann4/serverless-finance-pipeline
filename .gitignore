@@ -1,0 +1,14 @@
+# Ignore Terraform system files
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Ignore Python & PyCharm files
+.venv/
+__pycache__/
+.idea/
+
+# Ignore sensitive data
+data/
+*.zip
